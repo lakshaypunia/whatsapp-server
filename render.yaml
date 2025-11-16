@@ -1,25 +1,22 @@
 services:
   - type: web
-    name: whatsapp-server
-    env: node
-    region: oregon
-    plan: starter
-    repo: "YOUR_GIT_REPO_URL"    # optional if using UI; Render UI will set up repo
-    branch: main
-    disk:
-      - name: session-data
-        mountPath: /session
-    buildCommand: "npm install"
-    startCommand: "npm start"
+    name: whatsapp-wa-automate-server
+    runtime: node
+    nodeVersion: 18
+    region: singapore
+
+    buildCommand: |
+      apt-get update
+      apt-get install -y chromium
+      npm install
+
+    startCommand: node server.js
+
     envVars:
-      - key: NODE_ENV
-        value: production
-    build:
-      packages:
-        - wget
-        - apt-transport-https
-      commands:
-        # install Google Chrome stable
-        - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -O /tmp/chrome.deb
-        - apt-get update -y
-        - apt-get install -y /tmp/chrome.deb || apt-get -f install -y
+      - key: PORT
+        value: 3001
+
+    disk:
+      name: whatsapp-session
+      mountPath: /session
+      sizeGB: 1
