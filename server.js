@@ -32,7 +32,7 @@ async function startClient() {
   }
   
 
-start();
+startClient();
 
 const app = express();
 app.use(cors());
