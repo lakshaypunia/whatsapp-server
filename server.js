@@ -5,29 +5,35 @@ const { create } = require("@open-wa/wa-automate");
 let client;
 
 async function startClient() {
-    client = await create({
+      client = await create({
         sessionId: "nextjs-session",
         multiDevice: true,
         qrTimeout: 0,
         authTimeout: 0,
         headless: true,
-        dataPath: "/session",
+        dataPath: "/session-data", // This is correct, matches your disk
       
-        useChrome: true,
-        executablePath: "/usr/bin/chromium-browser",
+        // --- CHANGED ---
+        // REMOVED: useChrome: true
+        // REMOVED: executablePath: "/usr/bin/chromium-browser"
       
-        chromiumArgs: [
+        // Replaced 'chromiumArgs' with 'puppeteerOptions'
+        // and added a few more stable args
+        puppeteerOptions: {
+         args: [
           "--no-sandbox",
           "--disable-setuid-sandbox",
           "--disable-dev-shm-usage",
-          "--disable-gpu"
-        ]
-      });
-  
-    console.log("WhatsApp client ready!");
-  }
-  
-
+          "--disable-gpu",
+          "--single-process", // Helps in low-memory environments
+          "--no-zygote"
+         ]
+        }
+        // --- END OF CHANGES ---
+       });
+    
+         console.log("WhatsApp client ready!");
+     }
 startClient();
 
 const app = express();
