@@ -4,17 +4,31 @@ const { create } = require("@open-wa/wa-automate");
 
 let client;
 
-async function start() {
+async function startClient() {
     client = await create({
       sessionId: "nextjs-session",
       multiDevice: true,
       qrTimeout: 0,
       authTimeout: 0,
       headless: true,
-      dataPath: "./session"
+  
+      // IMPORTANT for Render -> persistent disk mount path
+      dataPath: "/session",
+  
+      // Path where Chrome will be installed on Render
+      executablePath: "/usr/bin/google-chrome-stable",
+  
+      // Puppeteer friendly args
+      chromiumArgs: [
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-accelerated-2d-canvas",
+        "--disable-gpu",
+      ],
     });
   
-    console.log("WhatsApp ready!");
+    console.log("WhatsApp client ready!");
   }
   
 
