@@ -11,7 +11,7 @@ async function startClient() {
         qrTimeout: 0,
         authTimeout: 0,
         headless: true,
-        dataPath: "/session-data", // This is correct, matches your disk
+        dataPath: "./session-data", // This is correct, matches your disk
       
         // --- CHANGED ---
         // REMOVED: useChrome: true
